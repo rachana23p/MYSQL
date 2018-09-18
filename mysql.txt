@@ -1,0 +1,101 @@
+$ sudo mysql
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+4 rows in set (0.00 sec)
+
+mysql> create database rachanacare;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| rachanacare        |
+| sys                |
++--------------------+
+5 rows in set (0.00 sec)
+
+mysql> use rachanacare;
+Database changed
+
+mysql> create table Physicians(id int(20), name varchar(255), password varchar(255), primary key(name));
+Query OK, 0 rows affected (0.19 sec)
+
+mysql> insert into Physicians values('1','Rachana','123');
+Query OK, 1 row affected (0.03 sec)
+
+mysql> select * from Physicians;
++------+---------+----------+
+| id   | name    | password |
++------+---------+----------+
+|    1 | Rachana | 123      |
++------+---------+----------+
+1 row in set (0.00 sec)
+
+mysql> create table Patients(IdPatients int(20), PersonalNo int(20), primary key(PersonalNo), Secondname varchar(255), Firstname varchar(255), Sex varchar(50), DateofBirth varchar(50), PlaceofBirth varchar(50), Placeofresidence varchar(100), Physician varchar(255), foreign key(Physician) references Physicians(name));
+Query OK, 0 rows affected (0.24 sec)
+
+mysql> insert into Patients values('1','98765432','Dsouza','Kevin','male','01jan1993','tumkur','manipal','Rachana');Query OK, 1 row affected (0.04 sec)
+
+mysql> select * from Patients;+------------+------------+------------+-----------+------+-------------+--------------+------------------+-----------+
+| IdPatients | PersonalNo | Secondname | Firstname | Sex  | DateofBirth | PlaceofBirth | Placeofresidence | Physician |
++------------+------------+------------+-----------+------+-------------+--------------+------------------+-----------+
+|          1 |   98765432 | Dsouza     | Kevin     | male | 01jan1993   | tumkur       | manipal          | Rachana   |
++------------+------------+------------+-----------+------+-------------+--------------+------------------+-----------+
+1 row in set (0.00 sec)
+
+mysql> create table Bonestages(id int(20), name varchar(255), stages varchar(50), constraint PK_Bonestages primary key(id,name,stages));
+Query OK, 0 rows affected (0.19 sec)
+
+mysql> insert Bonestages values('41','ribs','firststage');
+Query OK, 1 row affected (0.03 sec)
+
+mysql> select * from Bonestages;
++----+------+------------+
+| id | name | stages     |
++----+------+------------+
+| 41 | ribs | firststage |
++----+------+------------+
+1 row in set (0.00 sec)
+
+mysql> create table Bones(id int(20), bone varchar(255), stage varchar(255), text varchar(255), primary key(stage));
+Query OK, 0 rows affected (0.25 sec)
+
+mysql> insert Bones values('101','ribs','first stage','fractured');
+Query OK, 1 row affected (0.04 sec)
+
+mysql> select * from Bones;
++------+------+-------------+-----------+
+| id   | bone | stage       | text      |
++------+------+-------------+-----------+
+|  101 | ribs | first stage | fractured |
++------+------+-------------+-----------+
+1 row in set (0.00 sec)
+
+mysql> create table Consultations(IdConsultations int(20), PersonalNo int(20), DateofConsultation varchar(50), weight int(20), height int(20), Diagnostic varchar(255), selectedbones varchar(100), realscore varchar(100), maturityscore varchar(100), Boneage int(50), Physician varchar(255), foreign key(Physician) references Physicians(name), foreign key(Diagnostic) references Bones(stage), foreign key(PersonalNo) references Patients(PersonalNo));
+Query OK, 0 rows affected (0.27 sec)
+
+mysql> insert Consultations values('11','98765432','12oct18','105','5.8','first stage','ribs','45','54','24','Rachana');
+Query OK, 1 row affected (0.04 sec)
+
+mysql> select * from Consultations;
++-----------------+------------+--------------------+--------+--------+-------------+---------------+-----------+---------------+---------+-----------+
+| IdConsultations | PersonalNo | DateofConsultation | weight | height | Diagnostic  | selectedbones | realscore | maturityscore | Boneage | Physician |
++-----------------+------------+--------------------+--------+--------+-------------+---------------+-----------+---------------+---------+-----------+
+|              11 |   98765432 | 12oct18            |    105 |      6 | first stage | ribs          | 45        | 54            |      24 | Rachana   |
++-----------------+------------+--------------------+--------+--------+-------------+---------------+-----------+---------------+---------+-----------+
+1 row in set (0.00 sec)
+
+
+
